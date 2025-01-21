@@ -1,5 +1,7 @@
 class FireBaseUserModel {
+
   final String? userName;
+  final String? userEmail;
   final String? status;
   final String? fireId;
   final String? profileImage;
@@ -8,6 +10,7 @@ class FireBaseUserModel {
 
   // Constructor
   FireBaseUserModel(  {
+    this.userEmail,
     required this.role,
     required this.fireId,
     required this.userAppId,
@@ -20,6 +23,7 @@ class FireBaseUserModel {
   factory FireBaseUserModel.fromJson(Map<String, dynamic> json) {
     return FireBaseUserModel(
       userName: json['userName'] as String,
+      userEmail: json['userEmail'] as String,
       status: json['status'] as String,
       profileImage: json['profileImage'] as String,
       fireId: json['fireId'] as String,
@@ -31,7 +35,7 @@ class FireBaseUserModel {
   // Method to convert the instance to JSON
   Map<String, dynamic> toJson() {
     return {
-      'userName': userName,
+      'userEmail': userEmail,
       'status': status,
       'profileImage': profileImage,
       'fireId' : fireId,
