@@ -25,15 +25,11 @@ class _InboxViewState extends State<InboxView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        backgroundColor: AppColors.transparent,
+        backgroundColor: AppColors.primary,
         elevation: 0,
         leading: 0.width,
         title: 'Message',
-        trailing: Icon(
-          Icons.more_vert,
-          color: AppColors.black,
-          size: 20.sp,
-        ).paddingRight(10.w),
+
       ),
       body: Column(
         children: [
@@ -65,7 +61,7 @@ class _InboxViewState extends State<InboxView> {
                   );
                 } else if (snapshot.data == null || snapshot.data!.isEmpty) {
                   return Expanded(
-                    child: Text('No Message')
+                    child: Center(child: Text('No Message'))
                   );
                 } else {
                   return Expanded(

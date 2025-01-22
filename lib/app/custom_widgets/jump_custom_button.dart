@@ -38,7 +38,7 @@ class CustomButton extends StatelessWidget {
         onPressed();
       },
       child: Container(
-        height: height   ?? 48.h,
+        height: height   ?? 58.h,
         width: width ?? double.infinity,
         decoration: BoxDecoration(
           color: bgColor ?? AppColors.primary,
@@ -68,7 +68,7 @@ class CustomButton extends StatelessWidget {
               key: textKey,
               style: textStyle ??
                    AppTextStyles.customText16(
-                    color: Colors.black,
+                    color: Colors.white,
                      fontWeight: FontWeight.w600
                   ),
             ),

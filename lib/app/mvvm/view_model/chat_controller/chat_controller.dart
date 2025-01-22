@@ -63,7 +63,7 @@ class ChatController extends  GetxController {
   TextEditingController messageController = TextEditingController();
   Map<String, dynamic>? userDataMap;
 
-  String senderId = '';
+  String senderId = '2';
 
   @override
   Future<void> onInit() async {
@@ -136,8 +136,9 @@ class ChatController extends  GetxController {
 
   Future<String> getUserId() async {
     FireBaseUserModel? currentUser = await SharedPreferencesService.readUserData();
-    String currentUserId =
-        currentUser!.userAppId.toString() ?? '';
+    String currentUserId ='2';
+    /// uncomment this
+        // currentUser!.userAppId.toString() ?? '';
 
     return currentUserId;
   }

@@ -112,7 +112,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                                 bottomLeft: isMe ? const Radius.circular(15) : Radius.zero,
                                 bottomRight: isMe ? Radius.zero : const Radius.circular(15),
                               ),
-                              color: isMe ? AppColors.primary : AppColors.darkBrownColor.withOpacity(.09),
+                              color: isMe ? AppColors.primaryLight : AppColors.darkBrownColor.withOpacity(.09),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,7 +174,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                                         trimCollapsedText: 'Show more',
                                         trimExpandedText: '...Show less',
                                         style: AppTextStyles.customText(
-                                          color: isMe ?   AppColors.white: AppColors.black.withOpacity(0.5) ,
+                                          color:  AppColors.black.withOpacity(0.5) ,
                                           fontWeight: FontWeight.w400,
                                           fontSize: 13.sp,
                                         ),

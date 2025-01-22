@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fire_chat/app/config/padding_extension.dart';
 import 'package:flutter_fire_chat/app/config/sizedbox_extension.dart';
+import 'package:flutter_fire_chat/app/custom_widgets/custom_app_bar.dart';
+import 'package:flutter_fire_chat/app/custom_widgets/jump_custom_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -30,19 +32,7 @@ class _ChatViewState extends State<ChatView> {
 
   final ChatController chatController = Get.find();
 
-  void scrollListener() {
-    if (chatController.messageScrollController.hasClients) {
-      // Check if the user has scrolled the list
-      final isScrolled = chatController.messageScrollController.offset > 1;
 
-      // Check if the user is at the bottom
-      final isAtBottom = chatController.messageScrollController.offset >=
-          chatController.messageScrollController.position.maxScrollExtent;
-
-      // Update the isScrolled value in the controller
-      chatController.isScrolled.value = isScrolled && !isAtBottom;
-    }
-  }
 
   @override
   void dispose() {
@@ -66,6 +56,59 @@ class _ChatViewState extends State<ChatView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar:  CustomAppBar(
+        backgroundColor: AppColors.primary,
+        leading: 0.width,
+        titleSpacing: 0,
+        centerTitle: false,
+
+        titleWidget:     FutureBuilder(
+            future: chatController.getUserBYIdOInOneTime(receiverId),
+            builder: (BuildContext context, AsyncSnapshot<FireBaseUserModel?> userSnapshot) {
+              if (userSnapshot.hasError) {
+                return Center(
+                  child: Text(
+                    'Error: ${userSnapshot.error}',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                );
+              } else if (userSnapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CupertinoActivityIndicator(),
+                );
+              } else if (userSnapshot.data == null) {
+                return 0.width;
+              } else {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      child: CustomCachedImage(
+                        height: 45.sp,
+                        width: 45.sp,
+                        imageUrl: userSnapshot.data?.profileImage ??
+                            "https://images.pexels.com/photos/4427543/pexels-photo-4427543.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                        borderRadius: 300.r,
+                      ).paddingFromAll(2.sp),
+                    ),
+                    SizedBox(width: 6.w),
+                    Text(
+                      userSnapshot.data?.userName ?? "Albert Flores",
+                      style: AppTextStyles.customText16(
+                        color: AppColors.black,
+                        letterSpacing: -0.2,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                );
+              }
+            }),
+      ),
         floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton:
@@ -92,72 +135,7 @@ class _ChatViewState extends State<ChatView> {
         ),
       body: Column(
         children: [
-          Container(
-            width: 1.sw,
-            decoration: BoxDecoration(
-              color: AppColors.white,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                FutureBuilder(
-                    future: chatController.getUserBYIdOInOneTime(receiverId),
-                    builder: (BuildContext context, AsyncSnapshot<FireBaseUserModel?> userSnapshot) {
-                      if (userSnapshot.hasError) {
-                        return Expanded(
-                          child: Center(
-                            child: Text(
-                              'Error: ${userSnapshot.error}',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                          ),
-                        );
-                      } else if (userSnapshot.connectionState == ConnectionState.waiting) {
-                        return Expanded(
-                          child: Center(
-                            child: CupertinoActivityIndicator(),
-                          ),
-                        );
-                      } else if (userSnapshot.data == null) {
-                        return 0.width;
-                      } else {
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                              ),
-                              child: CustomCachedImage(
-                                height: 75.sp,
-                                width: 75.sp,
-                                imageUrl: userSnapshot.data?.profileImage ??
-                                    "https://images.pexels.com/photos/4427543/pexels-photo-4427543.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-                                borderRadius: 300.r,
-                              ).paddingFromAll(2.sp),
-                            ),
-                            SizedBox(width: 6.w),
-                            Text(
-                              userSnapshot.data?.userName ?? "Albert Flores",
-                              style: AppTextStyles.customText16(
-                                color: AppColors.black,
-                                letterSpacing: -0.2,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        );
-                      }
-                    }),
-                Icon(
-                  Icons.more_vert,
-                  size: 20.sp,
-                ),
-              ],
-            ).paddingHorizontal(18.sp).paddingTop(MediaQuery.viewPaddingOf(context).top + 10).paddingBottom(15.h),
-          ),
+
           10.h.height,
           Expanded(
             child: Column(
@@ -208,22 +186,10 @@ class _ChatViewState extends State<ChatView> {
                     Row(
                       children: [
                         Expanded(
-                          child: TextField(
-                            style: AppTextStyles.customText14(
-                              color: Colors.black.withOpacity(0.7),
-                            ),
-                            autofocus: false,
+                          child: CustomField(
+                            hintColor: AppColors.borderGrey,
+                            hintText: 'Write Message',
                             controller: chatController.messageController,
-                            decoration: InputDecoration(
-                              fillColor: AppColors.white,
-                              filled: true,
-                              border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.circular(15)),
-                              contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 0),
-                              hintText: "Write your massage",
-                              hintStyle: AppTextStyles.customText14(
-                                color: AppColors.borderColor,
-                              ),
-                            ),
                           ),
                         ),
                         10.w.width,
