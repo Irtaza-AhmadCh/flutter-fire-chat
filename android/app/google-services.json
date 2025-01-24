@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "375002827398",
+    "project_id": "divinty-ebdce",
+    "storage_bucket": "divinty-ebdce.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:375002827398:android:9ec3257bc007505cbcdf07",
+        "android_client_info": {
+          "package_name": "com.example.flutter_fire_chat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDr7X_7cwS8n1MYHlbR3v0I62eKHszBeQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
