@@ -220,6 +220,38 @@ class ChatRepo{
       return null;
     }
   }
+  static Future<List<FireBaseUserModel>> getAllFireBaseUsers() async {
+    try {
+
+      final collection = await FirebaseFirestore.instance.collection('Users').get();
+
+      print(collection.size);
+      final users = collection.docs.map((document) {
+        final data = document.data();
+
+        // Ensure document data is valid
+        if (data == null || data.isEmpty) {
+          print("Skipping invalid document: ${document.id}");
+          return null;
+        }
+
+        // Map document data to FireBaseUserModel
+        return FireBaseUserModel(
+          fireId: data['fireId'] ?? '',
+          userAppId: data['userAppId'] ?? '',
+          userName: data['userName'] ?? '',
+          role: data['role'] ?? '',
+          status: data['status'] ?? '',
+          profileImage: data['profileImage'] ?? '',
+        );
+      }).whereType<FireBaseUserModel>().toList(); // Remove any null values
+
+      return users;
+    } catch (e) {
+      print("Error fetching user documents: $e");
+      return [];
+    }
+  }
 
   // Updates a user's data in Firestore with the provided data.
   static updateUserDate(String userId, Map<String, dynamic> data) {

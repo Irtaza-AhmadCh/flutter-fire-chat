@@ -10,29 +10,26 @@ import '../mvvm/view_model/chat_controller/chat_controller.dart';
 import 'custom_cached_image.dart';
 
 
-class InboxTile extends StatefulWidget {
+class UserTile extends StatefulWidget {
   final String? imgUrl;
   final String? title;
   final String? subtitle;
-  final Timestamp? time;
   final VoidCallback? onTap;
-  final String? chatBoxId;
   final String? currentUserId;
 
 
-  const InboxTile({super.key, this.imgUrl, this.title, this.subtitle, this.onTap, this.time,  this.chatBoxId,  this.currentUserId});
+  const UserTile({super.key, this.imgUrl, this.title, this.subtitle, this.onTap,   this.currentUserId});
 
   @override
-  State<InboxTile> createState() => _InboxTileState();
+  State<UserTile> createState() => _UserTileState();
 }
 
-class _InboxTileState extends State<InboxTile> {
-  
-   final  ChatController controller = Get.find();
+class _UserTileState extends State<UserTile> {
+
+  final  ChatController controller = Get.find();
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      key: ValueKey(widget.chatBoxId),
       onTap: widget.onTap,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 8.sp, vertical: 12.sp),
@@ -88,59 +85,9 @@ class _InboxTileState extends State<InboxTile> {
                 ],
               ),
             ),
-            Column(
-              children: [
-                Text(
-                  controller.formatTimestampToTime(widget.time ?? Timestamp.now()),
-                  style: AppTextStyles.customText12(color:AppColors.borderColor, fontWeight: FontWeight.w400),
-                ),4.h.height,
-                UnreadMessageCount(unreadMessageCountStream: controller.getUnreadMessageCount(widget.chatBoxId ??"", widget.currentUserId ?? ''),)
-              ],
-            )
           ],
         ),
       ),
     );
   }
 }
-
-
-class UnreadMessageCount extends StatelessWidget {
-  final Stream<int?> unreadMessageCountStream;
-
-  const UnreadMessageCount({
-    required this.unreadMessageCountStream,
-    Key? key
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<int?>(
-      stream: unreadMessageCountStream,
-      builder: (context, countSnap) {
-        if (countSnap.hasError || countSnap.data == null || countSnap.data == 0) {
-          return SizedBox.shrink();
-        }
-        return Container(
-          height: 15.sp,
-          width: 15.sp,
-          decoration: BoxDecoration(
-            color: AppColors.secondary,
-            shape: BoxShape.circle,
-          ),
-          child: Center(
-            child: Text(
-              countSnap.data! < 100 ? countSnap.data.toString() : '99+',
-              style: AppTextStyles.customText(
-                fontSize: 8,
-                color: AppColors.white,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-

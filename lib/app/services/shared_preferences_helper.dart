@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 class SharedPreferencesService {
-  static const String _keyDataModel = 'data_model';
   static const String _keyUserData = 'user_data';
   static const String _deviceToken = 'deviceToken';
   static const String _keyIsRemember = 'is_remember';
@@ -33,6 +32,7 @@ class SharedPreferencesService {
     String? data = prefs.getString(_keyUserData);
     if (data != null) {
       Map<String, dynamic> jsonData = json.decode(data);
+      print("data is shroed ${jsonData}");
       return FireBaseUserModel.fromJson(jsonData);
     }
     return null;

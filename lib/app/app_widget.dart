@@ -18,7 +18,7 @@ class ChatApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white
       ),
 
-        initialRoute: Routes.inboxView,
+        initialRoute: Routes.splashView,
         getPages: AppPages.routes,
       ),
     );

@@ -1,6 +1,9 @@
 import 'package:flutter_fire_chat/app/mvvm/model/chat_box_meta_data_model/chat_box_meta_data_model.dart';
+import 'package:flutter_fire_chat/app/mvvm/view/auth_views/login_view.dart';
 import 'package:flutter_fire_chat/app/mvvm/view/auth_views/sign_up_view.dart';
 import 'package:flutter_fire_chat/app/mvvm/view/inbox_view/inbox_view.dart';
+import 'package:flutter_fire_chat/app/mvvm/view/splash_view/splash_view.dart';
+import 'package:flutter_fire_chat/app/mvvm/view_model/auth_controllers/login_controller.dart';
 import 'package:flutter_fire_chat/app/mvvm/view_model/chat_controller/chat_controller.dart';
 import 'package:get/get.dart';
 import '../mvvm/view/message_view/message_view.dart';
@@ -13,6 +16,7 @@ abstract class Routes {
   static const signUpView = '/signUpView';
   static const chatView = '/chatView';
   static const inboxView = '/inboxView';
+  static const loginView = '/loginView';
 
 
 }
@@ -28,6 +32,11 @@ abstract class AppPages {
           Get.lazyPut<ChatController>(() => ChatController());
         })),
     GetPage(
+        name: Routes.splashView,
+        page: () => const SplashView(),
+        binding: BindingsBuilder(() {
+        })),
+    GetPage(
         name: Routes.inboxView,
         page: () => const InboxView(),
         binding: BindingsBuilder(() {
@@ -38,6 +47,12 @@ abstract class AppPages {
         page: () => const SignUpView(),
         binding: BindingsBuilder(() {
           Get.lazyPut<SignupController>(() => SignupController());
+        })),
+    GetPage(
+        name: Routes.loginView,
+        page: () => const LoginView(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut<LoginController>(() => LoginController());
         })),
   ];
 }

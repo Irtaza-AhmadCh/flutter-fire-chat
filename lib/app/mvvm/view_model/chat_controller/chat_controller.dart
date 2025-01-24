@@ -63,7 +63,7 @@ class ChatController extends  GetxController {
   TextEditingController messageController = TextEditingController();
   Map<String, dynamic>? userDataMap;
 
-  String senderId = '2';
+  String senderId = '';
 
   @override
   Future<void> onInit() async {
@@ -136,13 +136,19 @@ class ChatController extends  GetxController {
 
   Future<String> getUserId() async {
     FireBaseUserModel? currentUser = await SharedPreferencesService.readUserData();
-    String currentUserId ='2';
+    String currentUserId =
+        // 'D1gUUvsTvvhmx7R8iF7Ym1cuYOE2';
+        currentUser!.userAppId.toString() ?? '';
+    print('========== Got User ID $currentUserId');
     /// uncomment this
-        // currentUser!.userAppId.toString() ?? '';
-
+    ///
     return currentUserId;
   }
 
+
+  Future<List<FireBaseUserModel>> getAllFirebaseUsers(){
+   return  ChatRepo.getAllFireBaseUsers();
+   }
 
   String getChatBoxId(String recipientId, String senderId) {
     String id = ChatRepo.generateChatBoxId(senderId, recipientId);
@@ -496,6 +502,7 @@ class ChatController extends  GetxController {
     // Remove the message from the selected set
     selectedMessages.remove(index);
   }
+
 
 
   Stream<List<ChatMetadataModel>> getUserInbox(){

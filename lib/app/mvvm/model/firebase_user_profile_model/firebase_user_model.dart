@@ -36,6 +36,7 @@ class FireBaseUserModel {
   Map<String, dynamic> toJson() {
     return {
       'userEmail': userEmail,
+      'userName': userName,
       'status': status,
       'profileImage': profileImage,
       'fireId' : fireId,
